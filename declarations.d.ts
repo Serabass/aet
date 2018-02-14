@@ -8,4 +8,5 @@ declare module "download-progress" {
 
 declare module "tar-pack" {
     export var pack: any;
+    export var unpack: any;
 }

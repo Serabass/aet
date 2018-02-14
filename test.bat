@@ -1,4 +1,3 @@
 npm i -g
 cd test-project
-aet --init
-aet use nf/60sec --name=bond
+aet --init --use=nf/60sec

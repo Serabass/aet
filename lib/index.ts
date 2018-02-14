@@ -1,7 +1,7 @@
 import * as github from "octonode";
 import * as path from "path";
 import * as fs from "fs";
-import {pack} from "tar-pack";
+import {pack, unpack} from "tar-pack";
 
 let DownloadProgress: any = require("download-progress");
 
@@ -27,6 +27,20 @@ export class AET {
     constructor(public path: string, public name: string = null) {
         this.client = github.client();
         this.repo = this.client.repo(AET.REPO);
+    }
+
+    public static fromPackage(packagePath: string, destPath: string = AET.cwd): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            var read = require('fs').createReadStream;
+            read(packagePath)
+                .pipe(unpack(destPath, function(err: any) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                }))
+        });
     }
 
     public static initInCWD(name: string = null): AET {
@@ -103,15 +117,15 @@ export class AET {
         await this.download(files);
     }
 
-    public package(destroy: boolean = false):Promise<any> {
+    public package(destroy: boolean = false): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             let write = fs.createWriteStream;
             pack(this.path)
                 .pipe(write(path.join(this.path, '/package.tar.gz')))
-                .on('error', function (err: any) {
+                .on('error', function(err: any) {
                     reject(err);
                 })
-                .on('close', function () {
+                .on('close', function() {
                     reject();
                 });
         });
@@ -119,7 +133,7 @@ export class AET {
 
     public destroy(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            fs.unlink(path.join(this.path, AET.JSONFILE), function (err) {
+            fs.unlink(path.join(this.path, AET.JSONFILE), function(err) {
                 if (err) {
                     reject(err);
                     return;
