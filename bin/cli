@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var argv = require('minimist')(process.argv.slice(2));
+var path = require('path');
+var fs = require('fs');
+var AET = require('../dist/lib/index').AET;
+var aet;
+(async function() {
+    if (argv.init) {
+        aet = AET.initInCWD(argv.name);
+        if (argv.use) {
+            await aet.use(argv.use);
+        }
+    } else {
+        aet = AET.fromCWD();
+        switch (argv._[0]) {
+            case 'use':
+                try {
+                    await aet.use(argv._[1]);
+                } catch (e) {
+                    console.error(e);
+                }
+                break;
+            case 'package':
+                try {
+                    await aet.package();
+                } catch (e) {
+                    console.error(e);
+                }
+                break;
+        }
+    }
+})();

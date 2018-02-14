@@ -63,5 +63,6 @@ typings/
 !.idea/runConfigurations/**
 
 dist
+dist/**
 tests/**/*.js
 tests/**/*.js.map

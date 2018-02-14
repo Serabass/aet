@@ -1,9 +1,8 @@
 AET is a NPM-style project manager for Adobe After Effects
 
-`aet init` - place `.aet.json` to cwd (if it will be)
-`aet use nofuture/60sec` - install template named 60sec
-`aet use nofuture/60sec --init` - install template named 60sec with init
-`aet package` - pack into tar/zip package for sharing
+`aet init [--name=<name>]` - place `.aet.json` to cwd (if it will be)
+`aet use nf/60s [<path>] [--init|-i]` - install template named 60sec
+`aet package [<path>] [--destroy|-d]` - pack into tar/zip package for sharing and destroy if --destroy passed
 `aet destroy` - destroy project
 
 # .aet.json structure:
